@@ -15,7 +15,7 @@ class neuralNetwork:
 
 		# make weight matrices
 		self.Wih = np.random.normal(0.0, pow(self.hNodes, -0.5), (self.hNodes, self.iNodes))
-		self.Who = np.random.normal(0.0, pow(self,oNodes, -0.5), (self.oNodes, self.hNodes))
+		self.Who = np.random.normal(0.0, pow(self.oNodes, -0.5), (self.oNodes, self.hNodes))
 		
 		# define activation function
 		self.activationFunction = lambda x: scipy.special.expit(x)
@@ -46,3 +46,8 @@ class neuralNetwork:
 		pass
 
 	pass
+
+# tests
+
+n = neuralNetwork(3, 3, 3, 0.3)
+print(n.query([1.0, 0.5, -1.5]))
