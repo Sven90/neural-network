@@ -66,3 +66,28 @@ class neuralNetwork:
 		pass
 
 	pass
+
+# tests
+n = neuralNetwork(1, 1, 1, 0.1)
+
+# train network
+for m in range(0,10000):
+
+	n.train(0.01, 0.02)
+	n.train(0.02, 0.04)
+	n.train(0.03, 0.06)
+	n.train(0.04, 0.08)
+	n.train(0.05, 0.1)
+	n.train(0.06, 0.12)
+	n.train(0.07, 0.14)
+	n.train(0.08, 0.16)
+	n.train(0.09, 0.18)
+	n.train(0.1, 0.2)
+	
+	pass
+
+print(n.query(0.015))
+print(n.query(0.023))
+print(n.query(0.039))
+print(n.query(0.041))
+print(n.query(0.051))
