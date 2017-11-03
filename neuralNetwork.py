@@ -22,11 +22,6 @@ class neuralNetwork:
 		
 		pass
 
-	# train
-	def train():
-
-		pass
-
 	# query the neural network query([1, 3, 4, 5, ...])
 	def query(self, inputList):
 
@@ -45,9 +40,29 @@ class neuralNetwork:
 
 		pass
 
+	# train the neural network
+	def train(self, inputList, targetList):
+
+		# calc output like query function
+		inp = np.array(inputList, ndmin=2).T
+		hInp = np.dot(self.Wih, inp)
+		hOut = self.activationFunction(hInp)
+		fInp = np.dot(self.Who, hOut)
+		fOut = self.activationFunction(fInp)
+
+		# calc final error
+		target = np.array(targetList, ndmin=2).T
+		fErr = target - fOut
+
+		# calc hidden error
+		hErr = np.dot(self.Who.T, fErr)
+
+		# update ho layer
+		self.Who += self.lr * np.dot((fErr * fOut * (1.0 - fOut)), np.transpose(hOut))
+
+		# update ih layer
+		self.Wih += self.lr * np.dot((hErr * hOut * (1.0 - hOut)), np.transpose(inp))
+
+		pass
+
 	pass
-
-# tests
-
-n = neuralNetwork(3, 3, 3, 0.3)
-print(n.query([1.0, 0.5, -1.5]))
