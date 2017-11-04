@@ -67,27 +67,10 @@ class neuralNetwork:
 
 	pass
 
-# tests
-n = neuralNetwork(1, 2, 1, 0.3)
+# test: handwritten numbers
+# open file
+dataFile = open("mnist_test_100.csv", 'r')
+dataList = dataFile.readlines()
+dataFile.close()
 
-# train network
-for m in range(0,30000):
-
-	n.train(0.01, 0.02)
-	n.train(0.02, 0.03)
-	n.train(0.03, 0.04)
-	n.train(0.04, 0.05)
-	n.train(0.05, 0.06)
-	n.train(0.06, 0.07)
-	n.train(0.07, 0.08)
-	n.train(0.08, 0.09)
-	n.train(0.09, 0.10)
-	n.train(0.1, 0.11)
-	
-	pass
-
-print(n.query(0.01))
-print(n.query(0.02))
-print(n.query(0.03))
-print(n.query(0.04))
-print(n.query(0.11))
+dataList[0]
