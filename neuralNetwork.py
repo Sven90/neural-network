@@ -69,8 +69,9 @@ class neuralNetwork:
 
 # test: handwritten numbers
 # open file
-dataFile = open("mnist_test_100.csv", 'r')
+dataFile = open("mnist_train.csv", 'r')
 dataList = dataFile.readlines()
 dataFile.close()
 
-dataList[0]
+print(len(dataList))
+print(dataList[0])
