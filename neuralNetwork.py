@@ -69,4 +69,34 @@ class neuralNetwork:
 
 # train neural network for handwritten number recognition
 
+inputNodes = 784
+hiddenNodes = 100
+outputNodes = 10
+learningRate = 0.3
 
+n = neuralNetwork(inputNodes, hiddenNodes, outputNodes, learningRate)
+
+trainingDataFile = open("mnist_train_100.csv", 'r')
+trainingDataList = trainingDataFile.readlines()
+trainingDataFile.close()
+
+for record in trainingDataList:
+	allValues = record.split(',')
+	inputs = (np.asfarray(allValues[1:]) / 255.0 * 0.99) + 0.01
+	targets = np.zeros(outputNodes) + 0.01
+	targets[int(allValues[0])] = 0.99
+	n.train(inputs, targets)
+
+	pass
+
+# test it
+testDataFile = open("mnist_test_10.csv", 'r')
+testDataList = testDataFile.readlines()
+testDataFile.close()
+
+allValues = testDataList[0].split(',')
+print(allValues[0])
+imageArray = np.asfarray(allValues[1:]).reshape((28, 28))
+plt.imshow(imageArray, cmap='Greys', interpolation='None')
+plt.show()
+print(n.query((np.asfarray(allValues[1:]) / 255.0 * 0.99) + 0.01))
