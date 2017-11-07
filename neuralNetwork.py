@@ -65,18 +65,16 @@ class neuralNetwork:
 
 		pass
 
-	pass
-
 # train neural network for handwritten number recognition
 
 inputNodes = 784
 hiddenNodes = 100
 outputNodes = 10
-learningRate = 0.3
+learningRate = 0.2
 
 n = neuralNetwork(inputNodes, hiddenNodes, outputNodes, learningRate)
 
-trainingDataFile = open("mnist_train_100.csv", 'r')
+trainingDataFile = open("mnist_train.csv", 'r')
 trainingDataList = trainingDataFile.readlines()
 trainingDataFile.close()
 
@@ -90,13 +88,32 @@ for record in trainingDataList:
 	pass
 
 # test it
-testDataFile = open("mnist_test_10.csv", 'r')
+scorecard = []
+testDataFile = open("mnist_test.csv", 'r')
 testDataList = testDataFile.readlines()
 testDataFile.close()
 
-allValues = testDataList[0].split(',')
-print(allValues[0])
-imageArray = np.asfarray(allValues[1:]).reshape((28, 28))
-plt.imshow(imageArray, cmap='Greys', interpolation='None')
-plt.show()
-print(n.query((np.asfarray(allValues[1:]) / 255.0 * 0.99) + 0.01))
+epochs = 1
+
+for e in range(epochs):
+	for record in testDataList:
+		allValues = record.split(',')
+		correctAnswer = int(allValues[0])
+		#print(correctAnswer, "correct answer")
+		inputs = (np.asfarray(allValues[1:]) / 255.0 * 0.99) + 0.01
+		outputs = n.query(inputs)
+		answer = np.argmax(outputs)
+		#print(answer, "network's answer")
+		if (answer == correctAnswer):
+			scorecard.append(1)
+		else:
+			scorecard.append(0)
+			pass
+
+		pass
+
+	pass	
+
+# calculate performance
+scorecardArray = np.asfarray(scorecard)
+print("performance = ", scorecardArray.sum() / scorecardArray.size)
