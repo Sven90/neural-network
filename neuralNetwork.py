@@ -21,10 +21,12 @@ class neuralNetwork:
 		
 		# define activation function
 		self.activationFunction = lambda x: spec.expit(x)
+		# define inverse activation function
+		self.inverseActivationFunction = lambda x: spec.logit(x)
 		
 		pass
 
-	# query the neural network like query([1, 3, 4, 5, ...])
+	# query the neural network, query([1, 3, 4, 5, ...])
 	def query(self, inputList):
 
 		# convert input list to vector
@@ -39,6 +41,27 @@ class neuralNetwork:
 		finalOutputVector = self.activationFunction(finalInputVector)
 
 		return finalOutputVector
+
+	# backquery the neural network
+	def backquery(self, targetList):
+
+		targets = np.array(targetList, ndmin=2).T
+		finalOutputVector = self.inverseActivationFunction(targets)
+		hiddenOutputVector = np.dot(self.WeightsHiddenOutput.T, finalOutputVector)
+		# scale back
+		hiddenOutputVector -= np.min(hiddenOutputVector)
+		hiddenOutputVector /= np.max(hiddenOutputVector)
+		hiddenOutputVector *= 0.98
+		hiddenOutputVector += 0.01
+
+		hiddenInputVector = self.inverseActivationFunction(hiddenOutputVector)
+		inputVector = np.dot(self.WeightsInputHidden.T, hiddenInputVector)
+		inputVector -= np.min(inputVector)
+		inputVector /= np.max(inputVector)
+		inputVector *= 0.98
+		inputVector += 0.01
+
+		return inputVector
 
 	# train the neural network
 	def train(self, inputList, targetList):
@@ -117,3 +140,14 @@ for e in range(epochs):
 # calculate performance
 scorecardArray = np.asfarray(scorecard)
 print("performance = ", scorecardArray.sum() / scorecardArray.size)
+
+# look at the neural networks brain
+answer = 2
+targets = np.zeros(outputNodes) + 0.01
+targets[answer] = 0.99
+print(targets)
+imageData = n.backquery(targets)
+
+#plot brain
+plt.imshow(imageData.reshape(28,28), cmap='Greys', interpolation='None')
+plt.show()
